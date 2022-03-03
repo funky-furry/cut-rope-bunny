@@ -11,4 +11,7 @@ class Link{
         });
         World.add(world, this.link);
     }
+    detach() {
+        this.link.bodyB = null;
+    }
 }

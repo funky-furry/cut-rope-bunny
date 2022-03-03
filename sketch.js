@@ -13,12 +13,12 @@ var ground;
 var rope;
 var fruit;
 var fruitcon;
-var backgroundImage, cutImage, melonImage, rabbitImage;
+var backgroundImage, melonImage, rabbitImage;
 var rabbit;
+var button;
 
 function preload(){
   backgroundImage = loadImage("./images/background.png");
-  cutImage = loadImage("./images/cut_btn.png");
   melonImage = loadImage("./images/melon.png");
   rabbitImage = loadImage("./images/Rabbit-01.png");
 }
@@ -42,7 +42,13 @@ function setup()
   rope = new Rope(10, {x:245, y:10});
   fruit = Bodies.circle(300,300,20);
   Composite.add(rope.body, fruit);
-  fruitcon = new Link(rope, fruit)
+  fruitcon = new Link(rope, fruit);
+
+  //button
+  button = createImg("./images/cut_btn.png");
+  button.position(220,5);
+  button.size(50,50);
+  button.mouseClicked(drop);
 }
 
 function draw() 
@@ -59,4 +65,9 @@ function draw()
   Engine.update(engine);
   drawSprites();
    
+}
+
+function drop () {
+  rope.break();
+  fruitcon.detach();
 }
