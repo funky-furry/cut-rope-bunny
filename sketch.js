@@ -16,11 +16,23 @@ var fruitcon;
 var backgroundImage, melonImage, rabbitImage;
 var rabbit;
 var button;
+var sadbunny, eatingbunny, idlebunny;
 
 function preload(){
   backgroundImage = loadImage("./images/background.png");
   melonImage = loadImage("./images/melon.png");
   rabbitImage = loadImage("./images/Rabbit-01.png");
+  sadbunny = loadAnimation("./images/sad_1.png","./images/sad_2.png","./images/sad_3.png");
+  eatingbunny = loadAnimation("./images/eat_0.png","./images/eat_1.png","./images/eat_2.png","./images/eat_3.png","./images/eat_4.png");
+  idlebunny = loadAnimation("./images/blink_1.png", "./images/blink_2.png", "./images/blink_3.png");
+  sadbunny.playing = true;
+  sadbunny.frameDelay = 10;
+  sadbunny.looping = false;
+  eatingbunny.playing = true;
+  eatingbunny.looping = false;
+  eatingbunny.frameDelay = 10;
+  idlebunny.playing = true;
+  idlebunny.frameDelay = 10;
 }
 
 function setup() 
@@ -31,8 +43,11 @@ function setup()
   world = engine.world;
   ground = new Ground(200,790,600,20);
 
-  rabbit = createSprite(250,730,20,60);
-  rabbit.addImage(rabbitImage);
+  rabbit = createSprite(400,710,20,60);
+  rabbit.addAnimation("bunnyparado", idlebunny);
+  rabbit.addAnimation("sad", sadbunny);
+  rabbit.addAnimation("eating", eatingbunny);
+  
   rabbit.scale = 0.25
 
   rectMode(CENTER);
@@ -57,18 +72,21 @@ function draw()
   image(backgroundImage, 0, 0, width, height);
   ground.show();
   rope.show();
-  push();
-  imageMode(CENTER);
-  image(melonImage ,fruit.position.x, fruit.position.y, 85, 85);
-  pop();
+  if(fruit != null){
+    push();
+    imageMode(CENTER);
+    image(melonImage ,fruit.position.x, fruit.position.y, 85, 85);
+    pop();
+  }
+
   
   Engine.update(engine);
   drawSprites();
   if(collide(fruit, rabbit)){
-
+    rabbit.changeAnimation("eating");
   }
   if(collide(fruit, ground.body)){
-
+    rabbit.changeAnimation("sad");
   }
 }
 
@@ -79,7 +97,7 @@ function drop () {
 
 function collide(bodyA, bodyB) {
   if(bodyA != null && bodyB != null) {
-    var diff = dist(0,bodyA.position.y, 0, bodyB.position.y);
+    var diff = dist(bodyA.position.x,bodyA.position.y, bodyB.position.x, bodyB.position.y);
     if(diff < 80) {
       World.remove(world, fruit);
       fruit = null;
