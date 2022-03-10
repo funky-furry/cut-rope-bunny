@@ -64,10 +64,28 @@ function draw()
   
   Engine.update(engine);
   drawSprites();
-   
+  if(collide(fruit, rabbit)){
+
+  }
+  if(collide(fruit, ground.body)){
+
+  }
 }
 
 function drop () {
   rope.break();
   fruitcon.detach();
+}
+
+function collide(bodyA, bodyB) {
+  if(bodyA != null && bodyB != null) {
+    var diff = dist(0,bodyA.position.y, 0, bodyB.position.y);
+    if(diff < 80) {
+      World.remove(world, fruit);
+      fruit = null;
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
