@@ -48,7 +48,7 @@ function setup()
   var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if(isMobile){
     canW = displayWidth;
-    canH = displayHeight;
+    canH = displayHeight - 100;
     createCanvas(canW,canH);
   }else{
     canW = 500;
